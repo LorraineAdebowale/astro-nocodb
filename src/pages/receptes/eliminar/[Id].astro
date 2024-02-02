@@ -1,43 +1,51 @@
 ---
-import Layout from "../../../layouts/Layout.astro"
-import ReceptesController from '../../../classes/ReceptesController';
+import Layout from "../../../layouts/Layout.astro";
+import ReceptesController from "../../../classes/ReceptesController";
+import Recepta from "../../../components/Recepta.astro";
 // Exemple d'ús:
 
-const {Id} = Astro.params
+const { Id } = Astro.params;
+let  recepta;
 
 const receptesController = new ReceptesController();
-
-const recepta = await receptesController.getReceptaById(Id);
-console.log (recepta)
 
 
 if (Astro.request.method === "POST") {
     const data = await Astro.request.formData();
     const id = data.get("id");
 
-    //console.log("eliminant "+id)
-   
     await receptesController.deleteRecepta(id);
 
     return Astro.redirect("/");
+} else {
+     recepta = await receptesController.getReceptaById(Id);
+    //console.log(recepta);
 }
-
 ---
 
 <Layout title="elimina recepta">
-
-    <h1>Segur q vols eliminar{recepta.nom}? </h1>
+    <h1>Segur q vols eliminar {recepta.nom}? </h1>
 
     <form method="post">
-        <input
-        value={Id}
-        name="id"
-        type="hidden"
-    />
-        <button type="submit">Si</button>
-        <a href="/">
-            <button type="button">No</button>
+        <input value={Id} name="id" type="hidden" />
+
+
+            <button
+                class="bg-red-500 hover:bg-red-700 text-white py-1 px-2 text-sm rounded "
+            >
+                Sí
+            </button>
+
+        <a href={"/"}>
+            <button
+            type="button"
+                class="bg-green-500 hover:bg-green-700 text-white py-1 px-2 text-sm rounded "
+            >
+                No
+            </button>
         </a>
+
+
+     
     </form>
-        
 </Layout>

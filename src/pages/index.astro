@@ -1,12 +1,24 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import ReceptesController from '../classes/ReceptesController';
+import Layout from "../layouts/Layout.astro";
+import ReceptesController from "../classes/ReceptesController";
 import Recepta from "../components/Recepta.astro";
 // Exemple d'ús:
 
 const receptesController = new ReceptesController();
 
 const receptes = await receptesController.getAllReceptes();
+
+// simple validació d'usuari loguejat
+
+let usuari;
+if (Astro.cookies.has("usuari")) {
+  const cookie = Astro.cookies.get("usuari")
+  usuari = cookie.value
+} else {
+  return Astro.redirect('/login')
+}
+
+
 /* receptes té el format:
 {
     list: [
@@ -16,14 +28,7 @@ const receptes = await receptesController.getAllReceptes();
         CreatedAt: '2024-02-01 09:44:44+00:00',
         UpdatedAt: '2024-02-01 09:46:32+00:00',
         foto: 'https://baconmockup.com/400/300/',
-        descripcio: 'Ingredients:\n' +
-          '* Dos ous\n' +
-          '* Unes llesques de bacon\n' +
-          'Preparació:\n' +
-          '* Fregir el bacon amb oli d\'oliva a foc mig fins que quedi torradet.\n' +
-          '* Fregir els ous amb oli abundant.\n' +
-          ' \n' +
-          ' '
+        descripcio: 'Ingredients..."
       },
 	  {
 		...
@@ -38,16 +43,18 @@ const receptes = await receptesController.getAllReceptes();
     }
   }
 */
-
-
 ---
 
-<Layout title="hola">
+<Layout title="Index" >
 
-	<a href="/receptes/nova">Nova recepta</a>
-	<hr>
-		{receptes.list.map(e => <Recepta dades={e} />)}
+  <a href="/receptes/nova" >
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      Nova recepta
+    </button>
+</a>
 
-	
 
+
+  <hr />
+  {receptes?.list.map((e) => <Recepta dades={e} />)}
 </Layout>

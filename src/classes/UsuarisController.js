@@ -1,13 +1,32 @@
-const APIURL = 'https://app.nocodb.com/api/v2/tables/myyaq1b2ngz9a3w/records';
+const APIURL = 'https://app.nocodb.com/api/v2/tables/mm618y66zizra8b/records';
 const TOKEN = 'oV8JvVBpl-vp5ob1BlC0k28wMXAl6z1ieU9-IRoC';
 
-class ReceptesController {
+class UsuarisController {
     constructor() {
         this.apiUrl = APIURL;
         this.token = TOKEN;
     }
 
-    async getAllReceptes() {
+    async validaUsuari(nom, password){
+        const response = await fetch(`${this.apiUrl}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'xc-token': this.token
+            }
+        });
+
+        const response_data =  await response.json();
+       
+        const users = response_data.list;
+        const validUser = users.filter(e => e.nom===nom && e.password===password)
+
+        return !!validUser.length;
+    }
+
+
+
+    async getAllUsuaris() {
         const response = await fetch(`${this.apiUrl}`, {
             method: 'GET',
             headers: {
@@ -19,7 +38,7 @@ class ReceptesController {
         return  response.json();
     }
 
-    async getReceptaById(id) {
+    async getUsuariById(id) {
         const response = await fetch(`${this.apiUrl}/${id}`, {
             method: 'GET',
             headers: {
@@ -32,7 +51,7 @@ class ReceptesController {
         return data;
     }
 
-    async createRecepta(nom, foto, descripcio) {
+    async createUsuari(nom, foto, descripcio) {
         const response = await fetch(`${this.apiUrl}`, {
             method: 'POST',
             headers: {
@@ -50,7 +69,7 @@ class ReceptesController {
         return data;
     }
 
-    async updateRecepta(id, nom, foto, descripcio) {
+    async updateUsuari(id, nom, foto, descripcio) {
         const response = await fetch(`${this.apiUrl}/${id}`, {
             method: 'PUT',
             headers: {
@@ -68,7 +87,7 @@ class ReceptesController {
         return data;
     }
 
-    async deleteRecepta(id) {
+    async deleteUsuari(id) {
         const response = await fetch(`${this.apiUrl}`, {
             method: 'DELETE',
             headers: {
@@ -85,14 +104,14 @@ class ReceptesController {
     }
 }
 
-export default ReceptesController;
+export default UsuarisController;
 
 /*
 // Exemple d'ús:
 const apiUrl = 'https://example.com/api';
 const token = 'el_teu_token_aqui';
 
-const receptesController = new ReceptesController(apiUrl, token);
+const usuarisController = new ReceptesController(apiUrl, token);
 
 // Obté totes les receptes
 receptesController.getAllReceptes().then(data => console.log(data));
@@ -102,12 +121,12 @@ const receptaId = 1;
 receptesController.getRecepteById(receptaId).then(data => console.log(data));
 
 // Crea una nova recepta
-const novaRecepta = {
+const novaUsuari = {
     nom: 'Paella',
     foto: 'paella.jpg',
     descripcio: 'Una deliciosa paella'
 };
-receptesController.createRecepte(novaRecepta.nom, novaRecepta.foto, novaRecepta.descripcio).then(data => console.log(data));
+receptesController.createRecepte(novaUsuari.nom, novaUsuari.foto, novaUsuari.descripcio).then(data => console.log(data));
 
 // Actualitza una recepta existent
 const receptaActualitzada = {
