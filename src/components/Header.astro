@@ -8,9 +8,25 @@ if (Astro.cookies.has("usuari")) {
   usuari = cookie.value
 }
 
+
+let idioma;
+
+if (Astro.cookies.has("idioma")) {
+  const cookie = Astro.cookies.get("idioma")
+  idioma = cookie.value
+} else {
+    Astro.cookies.set("idioma", "ca")
+    idioma="ca"
+}
+
 ---
 <div class="flex justify-between  text-slate-700 p-2 mb-4 border-b border-b-slate-500">
-    <h1 class="text-2xl">{title}</h1>
-    <p>{usuari ? <a href="/logout" class="underline">{usuari} (Logout)</a> : <a href="/login" class="underline">Login</a>}</p>
+    <h1 class="text-2xl">{idioma=="ca"?"Cuina":"Cocina"}</h1>
+    <h1 class="text-xl">{title}</h1>
+    <p>{usuari 
+         ? <a href="/logout" class="underline">{usuari} (Logout)</a> 
+         : <a href="/login" class="underline">Login</a>
+         }
+         </p>
    
 </div>

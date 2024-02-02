@@ -5,7 +5,15 @@ import Back from "../../components/Back.astro";
 import ReceptesController from '../../classes/ReceptesController';
 
 
+// simple validació d'usuari loguejat
 
+let usuari;
+if (Astro.cookies.has("usuari")) {
+  const cookie = Astro.cookies.get("usuari")
+  usuari = cookie.value
+} else {
+  return Astro.redirect('/login')
+}
 
 
 if (Astro.request.method === "POST") {
@@ -19,6 +27,8 @@ if (Astro.request.method === "POST") {
 
     return Astro.redirect("/");
 }
+
+
 ---
 
 <Layout title="Nova recepta">

@@ -1,28 +1,25 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Back from "../components/Back.astro";
 
 import UsuarisController from '../classes/UsuarisController';
 
 
-
-
-
 if (Astro.request.method === "POST") {
+
     const usuarisController = new UsuarisController();
     const data = await Astro.request.formData();
     const nom = data.get("nom");
     const password = data.get("password");
    
     const userOk = await usuarisController.validaUsuari(nom, password);
+
     if (userOk) {
         Astro.cookies.set("usuari", nom);
         return Astro.redirect("/");
     } else {
-        console.log("algo falla")
+        //console.log("algo falla")
         return Astro.redirect("/login_error");
     }
-    
 }
 ---
 

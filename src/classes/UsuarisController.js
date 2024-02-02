@@ -8,6 +8,7 @@ class UsuarisController {
     }
 
     async validaUsuari(nom, password){
+
         const response = await fetch(`${this.apiUrl}`, {
             method: 'GET',
             headers: {
@@ -19,6 +20,7 @@ class UsuarisController {
         const response_data =  await response.json();
        
         const users = response_data.list;
+        
         const validUser = users.filter(e => e.nom===nom && e.password===password)
 
         return !!validUser.length;
