@@ -10,12 +10,10 @@ const receptes = await receptesController.getAllReceptes();
 
 // simple validació d'usuari loguejat
 
-if (Astro.cookies.has("usuari")) {
+if (!Astro.cookies.has("usuari")) {
   //const cookie = Astro.cookies.get("usuari")
-} else {
   return Astro.redirect('/login')
-}
-
+} 
 
 /* receptes té el format:
 {
